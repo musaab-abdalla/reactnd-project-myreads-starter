@@ -22,7 +22,7 @@ class BooksApp extends React.Component {
   render() {
     return (
       <div className="app">
-        <SearchBooks />
+        <SearchBooks books={this.state.books} shelfChange={this.handelShelfChange} />
         <ListBooks books={this.state.books} shelfChange={this.handelShelfChange} />
       </div>
     );
