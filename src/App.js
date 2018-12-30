@@ -13,19 +13,22 @@ class BooksApp extends React.Component {
     BooksAPI.getAll().then(books => this.setState(() => ({ books })));
   }
 
-  handelShelfChange = (book, shelf) => {
-    BooksAPI.update(book, shelf).then(
-      BooksAPI.getAll().then(books => {
-        this.setState(() => ({ books }));
-      })
-    );
+  onChangeShelf = (bookId, shelf) => {
+    BooksAPI.get(bookId).then(book => {
+      BooksAPI.update(book, shelf).then(() => {
+        book.shelf = shelf;
+        this.setState(previousState => ({
+          books: previousState.books.filter(b => b.id !== bookId).concat(book)
+        }));
+      });
+    });
   };
 
   render() {
     return (
       <div className="app">
-        <SearchBooks books={this.state.books} shelfChange={this.handelShelfChange} />
-        <ListBooks books={this.state.books} shelfChange={this.handelShelfChange} />
+        <SearchBooks books={this.state.books} shelfChange={this.onChangeShelf} />
+        <ListBooks books={this.state.books} shelfChange={this.onChangeShelf} />
       </div>
     );
   }
