@@ -4,12 +4,16 @@ import Bookshelf from './Bookshelf';
 class ListBooks extends Component {
   state = {
     shelves: [
-      { name: 'currentlyReading', value: 'Currently Reating' },
-      { name: 'wantToRead', value: 'Want To Read' },
-      { name: 'read', value: 'Read' }
+      { id: 'currentlyReading', value: 'Currently Reating' },
+      { id: 'wantToRead', value: 'Want To Read' },
+      { id: 'read', value: 'Read' }
     ]
   };
+  bookList(books, shelf) {
+    return books.filter(book => book.shelf === shelf);
+  }
   render() {
+    const { books, shelfChange } = this.props;
     return (
       <div className="list-books">
         <div className="list-books-title">
@@ -18,7 +22,12 @@ class ListBooks extends Component {
         <div className="list-books-content">
           <div>
             {this.state.shelves.map(shelf => (
-              <Bookshelf key={shelf.name} shelfName={shelf.value} />
+              <Bookshelf
+                key={shelf.id}
+                books={this.bookList(books, shelf.id)}
+                shelfName={shelf.value}
+                shelfChange={shelfChange}
+              />
             ))}
           </div>
         </div>
