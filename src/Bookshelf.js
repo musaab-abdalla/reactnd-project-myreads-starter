@@ -9,11 +9,18 @@ class Bookshelf extends Component {
         <h2 className="bookshelf-title">{shelfName}</h2>
         <div className="bookshelf-books">
           <ol className="books-grid">
-            {books.map(book => (
-              <li key={book.id}>
-                <Book book={book} books={books} shelfName={shelfName} shelfChange={shelfChange} />
-              </li>
-            ))}
+            {books.length === 0 ? (
+              <div>
+                <div className="img-no-books" />
+                <h4>No books found.</h4>
+              </div>
+            ) : (
+              books.map(book => (
+                <li key={book.id}>
+                  <Book book={book} books={books} shelfName={shelfName} shelfChange={shelfChange} />
+                </li>
+              ))
+            )}
           </ol>
         </div>
       </div>
