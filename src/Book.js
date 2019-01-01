@@ -1,11 +1,17 @@
 import React, { Component } from 'react';
 
 class Book extends Component {
-  handleChange = (bookId, shelf) => {
-    this.props.shelfChange(bookId, shelf);
-  };
+  handleCurrentShelf(book) {
+    const currentBook = this.props.books.find(b => b.id === book.id);
+
+    if (currentBook) {
+      return currentBook.shelf;
+    } else {
+      return 'none';
+    }
+  }
   render() {
-    const { book } = this.props;
+    const { book, shelfChange } = this.props;
     const cover =
       !!book && book.imageLinks ? book.imageLinks.thumbnail : '<p>No cover available</p>';
     return (
@@ -22,8 +28,8 @@ class Book extends Component {
           <div className="book-shelf-changer">
             <select
               name={book.id}
-              value={book.shelf}
-              onChange={e => this.handleChange(e.target.name, e.target.value)}
+              value={this.handleCurrentShelf(book)}
+              onChange={e => shelfChange(e.target.name, e.target.value)}
             >
               <option value="move" disabled>
                 Move to...

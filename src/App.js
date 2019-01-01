@@ -14,29 +14,30 @@ class BooksApp extends React.Component {
     BooksAPI.getAll().then(books => this.setState(() => ({ books })));
   }
 
-  onChangeShelf = (bookId, shelf) => {
-    BooksAPI.get(bookId).then(book => {
-      BooksAPI.update(book, shelf).then(() => {
-        book.shelf = shelf;
-        this.setState(previousState => ({
-          books: previousState.books.filter(b => b.id !== bookId).concat(book)
+  onChangeShelf = (bookId, newShelf) => {
+    BooksAPI.get(bookId).then(bookToMove => {
+      BooksAPI.update(bookToMove, newShelf).then(() => {
+        bookToMove.shelf = newShelf;
+        this.setState(prevState => ({
+          books: prevState.books.filter(book => book.id !== bookId).concat(bookToMove)
         }));
       });
     });
   };
 
   render() {
+    const { books } = this.state;
     return (
       <div className="app">
         <Route
           exact
           path="/search"
-          render={() => <SearchBooks books={this.state.books} shelfChange={this.onChangeShelf} />}
+          render={() => <SearchBooks books={books} shelfChange={this.onChangeShelf} />}
         />
         <Route
           exact
           path="/"
-          render={() => <ListBooks books={this.state.books} shelfChange={this.onChangeShelf} />}
+          render={() => <ListBooks books={books} shelfChange={this.onChangeShelf} />}
         />
       </div>
     );
